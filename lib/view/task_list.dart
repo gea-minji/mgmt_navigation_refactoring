@@ -38,8 +38,8 @@ class TaskList extends StatelessWidget {
                       assignee: 'Assignee',
                     ).toJson();
                     final encoded = Uri.encodeComponent(jsonEncode(model));
-                    final target = '${PagePath.taskDetail}?task=$encoded';
-                    // context.push('${PagePath.taskSchedule}?task=$encoded');
+                    final target =
+                        '${PagePath.main}${PagePath.task}${PagePath.taskDetail}?task=$encoded';
                     context.go(target);
                   },
                   shape: RoundedRectangleBorder(
@@ -58,9 +58,7 @@ class TaskList extends StatelessWidget {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  // if (context.canPop()) context.pop();
-                  // if manual back button is needed
-                  context.go(PagePath.main);
+                  context.pop();
                 },
                 child: Container(
                   width: 100,

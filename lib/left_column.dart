@@ -14,20 +14,18 @@ class LeftColumn extends StatelessWidget {
         children: [
           Flexible(
             child: InkWell(
-              onTap: () {
-                context.go(PagePath.taskList);
-              },
+              onTap: () => context.go(PagePath.propertySelection),
               child: Container(
                 width: 100,
                 height: 100,
                 color: Colors.blueGrey,
-                child: Center(child: Text('Task')),
+                child: Center(child: Text('Property')),
               ),
             ),
           ),
           Flexible(
             child: InkWell(
-              onTap: () {},
+              onTap: () => context.go(PagePath.notification),
               child: Container(
                 width: 100,
                 height: 100,
@@ -38,12 +36,67 @@ class LeftColumn extends StatelessWidget {
           ),
           Flexible(
             child: InkWell(
-              onTap: () {},
+              onTap: () => context.go(PagePath.diagnostics),
               child: Container(
                 width: 100,
                 height: 100,
                 color: Colors.blueGrey,
-                child: Center(child: Text('Profile')),
+                child: Center(child: Text('Diagnostics')),
+              ),
+            ),
+          ),
+          Flexible(
+            child: InkWell(
+              onTap: () => context.go('${PagePath.main}${PagePath.task}'),
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.blueGrey,
+                child: Center(child: Text('Task')),
+              ),
+            ),
+          ),
+          Flexible(
+            child: InkWell(
+              onTap: () => context.go(PagePath.reports),
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.blueGrey,
+                child: Center(child: Text('Reports')),
+              ),
+            ),
+          ),
+          Flexible(
+            child: InkWell(
+              onTap: () => context.go(PagePath.usersAndRoles),
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.blueGrey,
+                child: Center(child: Text('Users & Roles')),
+              ),
+            ),
+          ),
+          Flexible(
+            child: InkWell(
+              onTap: () => context.go(PagePath.settings),
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.blueGrey,
+                child: Center(child: Text('Settings')),
+              ),
+            ),
+          ),
+          Flexible(
+            child: InkWell(
+              onTap: () => context.go(PagePath.trainingLibrary),
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.blueGrey,
+                child: Center(child: Text('Training Library')),
               ),
             ),
           ),

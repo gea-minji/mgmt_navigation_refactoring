@@ -5,94 +5,69 @@ import 'package:flutter_application_1/constants/page_path.dart';
 import 'package:flutter_application_1/left_column.dart';
 import 'package:flutter_application_1/model/task.dart';
 import 'package:flutter_application_1/top_row.dart';
-import 'package:flutter_application_1/view/settings.dart';
 import 'package:flutter_application_1/view/task_detail.dart';
 import 'package:flutter_application_1/view/task_list.dart';
 import 'package:go_router/go_router.dart';
 
-void main() {
-  final rootNavigatorKey = GlobalKey<NavigatorState>();
-  final shellNavigatorKey = GlobalKey<NavigatorState>();
+final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
-  final router = GoRouter(
-    navigatorKey: rootNavigatorKey,
-    initialLocation: PagePath.main,
+void main() {
+  runApp(MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  MainApp({super.key});
+
+  final _router = GoRouter(
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: PagePath.main, // root page
+    debugLogDiagnostics: true,
     routes: [
-      GoRoute(
-        path: PagePath.main,
-        builder: (context, state) => Main(
-          content: Center(
-            child: Text(
-              'Main Page',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ),
       ShellRoute(
-        navigatorKey: shellNavigatorKey,
-        pageBuilder: (context, state, child) => CustomTransitionPage<void>(
-          child: Main(content: child),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity: CurveTween(curve: Curves.easeIn).animate(animation),
-              child: child,
-            );
-          },
-        ),
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) => Main(content: child),
         routes: [
-          // GoRoute(
-          //   path: PagePath.taskList,
-          //   builder: (context, state) {
-          //     return Navigator(
-          //       onGenerateRoute: (settings) {
-          //         final uri = Uri.parse(settings.name ?? '');
-          //         final path = uri.path;
-          //         Widget page;
-          //         switch (path) {
-          //           case PagePath.taskDetail:
-          //             final encoded = state.uri.queryParameters['task'];
-          //             final decoded = jsonDecode(
-          //               Uri.decodeComponent(encoded ?? ''),
-          //             );
-          //             page = TaskDetail(model: Task.fromJson(decoded));
-          //             break;
-          //           default:
-          //             page = TaskList();
-          //         }
-          //         return MaterialPageRoute(
-          //           builder: (_) => page,
-          //           settings: settings,
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
           GoRoute(
-            path: PagePath.taskList,
-            builder: (context, state) => TaskList(),
-          ),
-          GoRoute(
-            path: PagePath.taskDetail,
-            builder: (context, state) {
-              final encoded = state.uri.queryParameters['task'];
-              final decoded = jsonDecode(Uri.decodeComponent(encoded ?? ''));
-              return TaskDetail(model: Task.fromJson(decoded));
-            },
-          ),
-          GoRoute(
-            path: PagePath.settings,
-            builder: (context, state) => Settings(),
-          ),
-          GoRoute(
-            path: PagePath.notification,
-            builder: (context, state) => Container(),
+            path: PagePath.main,
+            builder: (context, state) => Center(
+              child: Text(
+                'Main Page',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            routes: [
+              GoRoute(
+                path: PagePath.task,
+                builder: (context, state) => const TaskList(),
+                routes: [
+                  GoRoute(
+                    path: PagePath.taskDetail,
+                    builder: (context, state) {
+                      final encoded = state.uri.queryParameters['task'];
+                      final decoded = jsonDecode(
+                        Uri.decodeComponent(encoded ?? ''),
+                      );
+                      return TaskDetail(model: Task.fromJson(decoded));
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
     ],
   );
-  runApp(MaterialApp.router(routerConfig: router));
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Navigation Refactoring',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      routerConfig: _router,
+    );
+  }
 }
 
 class Main extends StatelessWidget {
