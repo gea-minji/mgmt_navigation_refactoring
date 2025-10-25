@@ -3,16 +3,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/page_path.dart';
 import 'package:flutter_application_1/left_column.dart';
+import 'package:flutter_application_1/model/location.dart';
 import 'package:flutter_application_1/model/task.dart';
-import 'package:flutter_application_1/top_row.dart';
-import 'package:flutter_application_1/view/task_detail.dart';
-import 'package:flutter_application_1/view/task_list.dart';
+import 'package:flutter_application_1/view/control/appliance_detail.dart';
+import 'package:flutter_application_1/view/property/building_controller.dart';
+import 'package:flutter_application_1/view/property/building_selection.dart';
+import 'package:flutter_application_1/view/property/property.dart';
+import 'package:flutter_application_1/view/task/task_detail.dart';
+import 'package:flutter_application_1/view/task/task_list.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 void main() {
+  Get.lazyPut(() => BuildingController());
   runApp(MainApp());
 }
 
@@ -29,20 +35,15 @@ class MainApp extends StatelessWidget {
         builder: (context, state, child) => Main(content: child),
         routes: [
           GoRoute(
-            path: PagePath.main,
-            builder: (context, state) => Center(
-              child: Text(
-                'Main Page',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
+            path: '/main',
+            builder: (context, state) => Property(),
             routes: [
               GoRoute(
-                path: PagePath.task,
+                path: '/task',
                 builder: (context, state) => const TaskList(),
                 routes: [
                   GoRoute(
-                    path: PagePath.taskDetail,
+                    path: '/detail',
                     builder: (context, state) {
                       final encoded = state.uri.queryParameters['task'];
                       final decoded = jsonDecode(
@@ -50,6 +51,32 @@ class MainApp extends StatelessWidget {
                       );
                       return TaskDetail(model: Task.fromJson(decoded));
                     },
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: '/property',
+                builder: (context, state) => Property(),
+                routes: [
+                  GoRoute(
+                    path: '/building',
+                    builder: (context, state) {
+                      final encoded = state.uri.queryParameters['location'];
+                      final decoded = jsonDecode(
+                        Uri.decodeComponent(encoded ?? ''),
+                      );
+                      return BuildingSelection(
+                        model: Location.fromJson(decoded),
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: '/appliance',
+                        builder: (context, state) {
+                          return ApplianceDetail();
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -64,7 +91,24 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Navigation Refactoring',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme(
+          brightness: Brightness.dark,
+          primary: Color(0xfff2a900),
+          onPrimary: Colors.white,
+          secondary: Color(0xff979797),
+          onSecondary: Colors.white,
+          tertiary: Color(0xffFF453A),
+          onTertiary: Colors.white,
+          error: Colors.black,
+          onError: Colors.white,
+          surface: Color(0xff272625),
+          onSurface: Colors.white,
+          surfaceContainerLowest: Color(0xff333333),
+          surfaceContainer: Color(0xff1E1F20),
+        ),
+      ),
       routerConfig: _router,
     );
   }
@@ -92,17 +136,19 @@ class Main extends StatelessWidget {
                   child: SizedBox(
                     width: 100,
                     height: 100,
-                    child: Text(
-                      'POC',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'POC',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-                Expanded(child: TopRow()),
+                Expanded(child: Container()),
               ],
             ),
           ),

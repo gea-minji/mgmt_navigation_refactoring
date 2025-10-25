@@ -7,101 +7,30 @@ class LeftColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            child: InkWell(
-              onTap: () => context.go(PagePath.propertySelection),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blueGrey,
-                child: Center(child: Text('Property')),
-              ),
+    final buttons = {
+      PagePath.propertySelection: 'Property',
+      PagePath.notification: 'Notification',
+      PagePath.diagnostics: 'Diagnostics',
+      PagePath.task: 'Task',
+      PagePath.reports: 'Reports',
+      PagePath.usersAndRoles: 'Users & Roles',
+      PagePath.settings: 'Settings',
+      PagePath.trainingLibrary: 'Training Library',
+    };
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: buttons.keys.map((key) {
+        return Flexible(
+          child: InkWell(
+            onTap: () => context.go(key),
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: Center(child: Text(buttons[key] ?? '')),
             ),
           ),
-          Flexible(
-            child: InkWell(
-              onTap: () => context.go(PagePath.notification),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blueGrey,
-                child: Center(child: Text('Notification')),
-              ),
-            ),
-          ),
-          Flexible(
-            child: InkWell(
-              onTap: () => context.go(PagePath.diagnostics),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blueGrey,
-                child: Center(child: Text('Diagnostics')),
-              ),
-            ),
-          ),
-          Flexible(
-            child: InkWell(
-              onTap: () => context.go('${PagePath.main}${PagePath.task}'),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blueGrey,
-                child: Center(child: Text('Task')),
-              ),
-            ),
-          ),
-          Flexible(
-            child: InkWell(
-              onTap: () => context.go(PagePath.reports),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blueGrey,
-                child: Center(child: Text('Reports')),
-              ),
-            ),
-          ),
-          Flexible(
-            child: InkWell(
-              onTap: () => context.go(PagePath.usersAndRoles),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blueGrey,
-                child: Center(child: Text('Users & Roles')),
-              ),
-            ),
-          ),
-          Flexible(
-            child: InkWell(
-              onTap: () => context.go(PagePath.settings),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blueGrey,
-                child: Center(child: Text('Settings')),
-              ),
-            ),
-          ),
-          Flexible(
-            child: InkWell(
-              onTap: () => context.go(PagePath.trainingLibrary),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blueGrey,
-                child: Center(child: Text('Training Library')),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      }).toList(),
     );
   }
 }

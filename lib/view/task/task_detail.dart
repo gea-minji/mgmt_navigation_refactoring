@@ -13,9 +13,12 @@ class TaskDetail extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            color: Colors.orangeAccent,
+            margin: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerLowest,
+              borderRadius: BorderRadius.circular(15),
+            ),
             width: double.infinity,
-            height: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -37,15 +40,16 @@ class TaskDetail extends StatelessWidget {
                   context.pop(context);
                 },
                 child: Container(
+                  margin: const EdgeInsets.only(right: 20, bottom: 20, top: 10),
                   width: 100,
                   height: 50,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.primary,
                   child: Center(
                     child: Text(
                       'Back',
                       style: TextStyle(
-                        color: Colors.orangeAccent,
                         fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
                   ),
