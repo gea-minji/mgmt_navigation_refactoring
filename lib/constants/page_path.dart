@@ -9,6 +9,8 @@ class PagePath {
   static const task = '/main/task';
   static const taskDetail = '$task/detail';
   static const reports = '/main/reports';
+  static const financialReports = '$reports/financial';
+  static const financialReportsResult = '$financialReports/result';
   static const usersAndRoles = '/main/users-and-roles';
   static const users = '$usersAndRoles/user';
   static const roles = '$usersAndRoles/roles';

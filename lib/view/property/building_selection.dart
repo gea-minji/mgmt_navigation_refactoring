@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/argument_keys.dart';
 import 'package:flutter_application_1/constants/page_path.dart';
 import 'package:flutter_application_1/model/location.dart';
 import 'package:flutter_application_1/view/property/building_controller.dart';
@@ -9,9 +10,9 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:go_router/go_router.dart';
 
 class BuildingSelection extends GetView<BuildingController> {
-  const BuildingSelection({super.key, required this.model});
+  const BuildingSelection({super.key, this.model});
 
-  final Location model;
+  final Location? model;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class BuildingSelection extends GetView<BuildingController> {
               ),
               const SizedBox(width: 10),
               Text(
-                model.name ?? '',
+                model?.name ?? '',
                 style: TextStyle(color: Color(0xff808080)),
               ),
             ],
@@ -105,11 +106,7 @@ class BuildingSelection extends GetView<BuildingController> {
                           padding: const EdgeInsets.all(20),
                           child: InkWell(
                             onTap: () {
-                              final encoded = Uri.encodeComponent(
-                                jsonEncode(model),
-                              );
-                              final target =
-                                  '${PagePath.applianceControl}?location=$encoded';
+                              final target = PagePath.applianceControl;
                               context.go(target);
                             },
                             child: Container(
